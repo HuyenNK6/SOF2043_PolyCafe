@@ -6,6 +6,7 @@ package poly.cafe.ui;
 
 import poly.cafe.controller.PolyCafeController;
 import javax.swing.ImageIcon;
+import poly.cafe.util.XAuth;
 import poly.cafe.util.XIcon;
 
 /**
@@ -26,6 +27,13 @@ public class PolyCafeJFrame extends javax.swing.JFrame implements PolyCafeContro
         this.setLocationRelativeTo(null);
         this.showWelcomeJDialog(this);
         this.showLoginJDialog(this);
+        //LAB 3: Hiệu chỉnh phương thức init() của PolyCafeJFrame như sau để hiển thị thông tin user lên giao diện.
+        XIcon.setIcon(lblPhoto, "photos/" + XAuth.user.getPhoto());
+        lblFullname.setText(XAuth.user.getFullname());
+
+        if (!XAuth.user.isManager()) {
+            pnlCenter.remove(pnlManager);
+        }
     }
 
     /**
@@ -48,7 +56,8 @@ public class PolyCafeJFrame extends javax.swing.JFrame implements PolyCafeContro
         jPanel1 = new javax.swing.JPanel();
         lblPhoto = new javax.swing.JLabel();
         lblFullname = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
+        pnlCenter = new javax.swing.JPanel();
+        pnlManager = new javax.swing.JPanel();
         btnBillManager = new javax.swing.JButton();
         btnDrinkManager = new javax.swing.JButton();
         btnCategoryManager = new javax.swing.JButton();
@@ -63,7 +72,7 @@ public class PolyCafeJFrame extends javax.swing.JFrame implements PolyCafeContro
         btnExit = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1096, 470));
+        setPreferredSize(new java.awt.Dimension(1150, 500));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
@@ -95,18 +104,17 @@ public class PolyCafeJFrame extends javax.swing.JFrame implements PolyCafeContro
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 300, 280));
 
-        jPanel2.setMinimumSize(new java.awt.Dimension(800, 470));
-        jPanel2.setPreferredSize(new java.awt.Dimension(800, 470));
-        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        pnlCenter.setMinimumSize(new java.awt.Dimension(800, 470));
+        pnlCenter.setPreferredSize(new java.awt.Dimension(800, 470));
+        pnlCenter.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        pnlManager.setOpaque(false);
 
         btnBillManager.setText("PHIẾU BÁN HÀNG");
-        jPanel2.add(btnBillManager, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 400, 160, 40));
 
         btnDrinkManager.setText("ĐỒ UỐNG");
-        jPanel2.add(btnDrinkManager, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 330, 160, 40));
 
         btnCategoryManager.setText("LOẠI ĐỒ UỐNG");
-        jPanel2.add(btnCategoryManager, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 330, 160, 40));
 
         btnUserManager.setText("NGƯỜI SỬ DỤNG");
         btnUserManager.addActionListener(new java.awt.event.ActionListener() {
@@ -114,7 +122,6 @@ public class PolyCafeJFrame extends javax.swing.JFrame implements PolyCafeContro
                 btnUserManagerActionPerformed(evt);
             }
         });
-        jPanel2.add(btnUserManager, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 400, 160, 40));
 
         btnRevenueManager.setText("DOANH THU");
         btnRevenueManager.addActionListener(new java.awt.event.ActionListener() {
@@ -122,16 +129,51 @@ public class PolyCafeJFrame extends javax.swing.JFrame implements PolyCafeContro
                 btnRevenueManagerActionPerformed(evt);
             }
         });
-        jPanel2.add(btnRevenueManager, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 400, 160, 40));
 
         btnCardManager.setText("THẺ ĐỊNH DANH");
-        jPanel2.add(btnCardManager, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 330, 160, 40));
+
+        javax.swing.GroupLayout pnlManagerLayout = new javax.swing.GroupLayout(pnlManager);
+        pnlManager.setLayout(pnlManagerLayout);
+        pnlManagerLayout.setHorizontalGroup(
+            pnlManagerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlManagerLayout.createSequentialGroup()
+                .addGap(36, 36, 36)
+                .addGroup(pnlManagerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnDrinkManager, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnBillManager, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(81, 81, 81)
+                .addGroup(pnlManagerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnCategoryManager, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnUserManager, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 97, Short.MAX_VALUE)
+                .addGroup(pnlManagerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnCardManager, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnRevenueManager, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(36, 36, 36))
+        );
+        pnlManagerLayout.setVerticalGroup(
+            pnlManagerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlManagerLayout.createSequentialGroup()
+                .addContainerGap(15, Short.MAX_VALUE)
+                .addGroup(pnlManagerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnDrinkManager, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCategoryManager, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCardManager, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(pnlManagerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnBillManager, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnUserManager, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnRevenueManager, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(27, 27, 27))
+        );
+
+        pnlCenter.add(pnlManager, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 320, 730, 140));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/poly/cafe/icons/coffee-shop.jpg"))); // NOI18N
         jLabel1.setText("jLabel1");
-        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 0, -1, -1));
+        pnlCenter.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 0, -1, -1));
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(296, 0, -1, 476));
+        getContentPane().add(pnlCenter, new org.netbeans.lib.awtextra.AbsoluteConstraints(296, 0, -1, 476));
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -242,10 +284,11 @@ public class PolyCafeJFrame extends javax.swing.JFrame implements PolyCafeContro
     private javax.swing.JButton btnUserManager;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JLabel lblFullname;
     private javax.swing.JLabel lblPhoto;
+    private javax.swing.JPanel pnlCenter;
+    private javax.swing.JPanel pnlManager;
     // End of variables declaration//GEN-END:variables
 
 }

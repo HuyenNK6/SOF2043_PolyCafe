@@ -50,9 +50,9 @@ public class CardManagerJDialog extends javax.swing.JDialog implements CardContr
         jLabel1 = new javax.swing.JLabel();
         txtId = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        rdbOperating = new javax.swing.JRadioButton();
-        rdbError = new javax.swing.JRadioButton();
-        rdbLose = new javax.swing.JRadioButton();
+        rdoOperating = new javax.swing.JRadioButton();
+        rdoError = new javax.swing.JRadioButton();
+        rdoLose = new javax.swing.JRadioButton();
         btnCreate = new javax.swing.JButton();
         btnUpdate = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
@@ -152,14 +152,14 @@ public class CardManagerJDialog extends javax.swing.JDialog implements CardContr
 
         jLabel2.setText("Trạng thái");
 
-        buttonGroup1.add(rdbOperating);
-        rdbOperating.setText("Operating");
+        buttonGroup1.add(rdoOperating);
+        rdoOperating.setText("Operating");
 
-        buttonGroup1.add(rdbError);
-        rdbError.setText("Error");
+        buttonGroup1.add(rdoError);
+        rdoError.setText("Error");
 
-        buttonGroup1.add(rdbLose);
-        rdbLose.setText("Lose");
+        buttonGroup1.add(rdoLose);
+        rdoLose.setText("Lose");
 
         btnCreate.setText("Taọ mới");
         btnCreate.addActionListener(new java.awt.event.ActionListener() {
@@ -242,11 +242,11 @@ public class CardManagerJDialog extends javax.swing.JDialog implements CardContr
                                         .addGap(18, 18, 18)
                                         .addComponent(btnMoveFirst, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE))
                                     .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addComponent(rdbOperating, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(rdoOperating, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(47, 47, 47)
-                                        .addComponent(rdbError, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(rdoError, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(46, 46, 46)
-                                        .addComponent(rdbLose, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(rdoLose, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnMovePrevious, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -267,9 +267,9 @@ public class CardManagerJDialog extends javax.swing.JDialog implements CardContr
                 .addComponent(jLabel2)
                 .addGap(29, 29, 29)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(rdbOperating)
-                    .addComponent(rdbError)
-                    .addComponent(rdbLose))
+                    .addComponent(rdoOperating)
+                    .addComponent(rdoError)
+                    .addComponent(rdoLose))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 77, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCreate)
@@ -429,9 +429,9 @@ public class CardManagerJDialog extends javax.swing.JDialog implements CardContr
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JRadioButton rdbError;
-    private javax.swing.JRadioButton rdbLose;
-    private javax.swing.JRadioButton rdbOperating;
+    private javax.swing.JRadioButton rdoError;
+    private javax.swing.JRadioButton rdoLose;
+    private javax.swing.JRadioButton rdoOperating;
     private javax.swing.JTabbedPane tabs;
     private javax.swing.JTable tblCards;
     private javax.swing.JTextField txtId;
@@ -449,12 +449,12 @@ public class CardManagerJDialog extends javax.swing.JDialog implements CardContr
         txtId.setText(String.valueOf(entity.getId()));
         int status = entity.getStatus();
         if (status == 1) {
-            rdbOperating.setSelected(true);
+            rdoOperating.setSelected(true);
         } else if (status == 0) {
-            rdbError.setSelected(true);
+            rdoError.setSelected(true);
         }
         if (status == -1) {
-            rdbLose.setSelected(true);
+            rdoLose.setSelected(true);
         }
     }
 
@@ -462,11 +462,11 @@ public class CardManagerJDialog extends javax.swing.JDialog implements CardContr
     public Card getForm() {
         Card entity = new Card();
         entity.setId(Integer.valueOf(txtId.getText()));
-        if (rdbOperating.isSelected()) {
+        if (rdoOperating.isSelected()) {
             entity.setStatus(1);
-        } else if (rdbError.isSelected()) {
+        } else if (rdoError.isSelected()) {
             entity.setStatus(0);
-        } else if (rdbLose.isSelected()) {
+        } else if (rdoLose.isSelected()) {
             entity.setStatus(-1);
         }
         return entity;
