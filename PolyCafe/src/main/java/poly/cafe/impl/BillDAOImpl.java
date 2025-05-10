@@ -4,9 +4,11 @@
  */
 package poly.cafe.impl;
 
+import java.util.Date;
 import java.util.List;
 import poly.cafe.dao.BillDAO;
 import poly.cafe.entity.Bill;
+import poly.cafe.util.XAuth;
 import poly.cafe.util.XJdbc;
 import poly.cafe.util.XQuery;
 
@@ -75,6 +77,33 @@ public class BillDAOImpl implements BillDAO {
     @Override
     public Bill findById(Long id) {
         return XQuery.getSingleBean(Bill.class, findByIdSql, id);
+    }
+
+    //LAB 4: bổ sung
+    String findByTimeRangeSql = """
+                                SELECT * FROM Bills  
+                                WHERE Checkin BETWEEN ? AND ? ORDER BY Checkin DESC
+                                """;
+
+    @Override
+    public List<Bill> findByTimeRange(Date begin, Date end) {
+        return XQuery.getBeanList(Bill.class, findByTimeRangeSql, begin, end);
+    }
+
+    @Override
+    public Bill findServicingByCardId(Integer cardId) {
+        String sql = "SELECT * FROM Bills WHERE CardId=? AND Status=0";
+        Bill bill = XQuery.getSingleBean(Bill.class, sql, cardId);
+        if (bill == null) { // không tìm thấy -> tạo mới 
+            Bill newBill = new Bill();
+
+            newBill.setCardId(cardId);
+            newBill.setCheckin(new Date());
+            newBill.setStatus(0); // đang phục vụ 
+            newBill.setUsername(XAuth.user.getUsername());
+            bill = this.create(newBill); // insert 
+        }
+        return bill;
     }
 
 }

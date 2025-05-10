@@ -21,4 +21,7 @@ public class BillDetail {
  private double unitPrice;
  private double discount;
  private int quantity;
+ 
+ //LAB 4: BillDetail: bổ sung thuộc tính drinkName
+ private String drinkName; 
 }

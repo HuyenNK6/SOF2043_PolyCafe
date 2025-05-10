@@ -4,11 +4,25 @@
  */
 package poly.cafe.ui;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.event.ActionEvent;
+import java.util.List;
+import javax.swing.JButton;
+import poly.cafe.controller.SalesController;
+import poly.cafe.dao.BillDAO;
+import poly.cafe.dao.CardDAO;
+import poly.cafe.entity.Bill;
+import poly.cafe.entity.Card;
+import poly.cafe.impl.BillDAOImpl;
+import poly.cafe.impl.CardDAOImpl;
+
 /**
  *
  * @author Huyen
  */
-public class SalesJDialog extends javax.swing.JDialog {
+public class SalesJDialog extends javax.swing.JDialog implements SalesController {
 
     /**
      * Creates new form SalesJDialog
@@ -27,21 +41,36 @@ public class SalesJDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        pnlCard = new javax.swing.JPanel();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(1000, 500));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
+
+        pnlCard.setPreferredSize(new java.awt.Dimension(1000, 500));
+        pnlCard.setLayout(new java.awt.GridLayout(0, 6, 5, 5));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(pnlCard, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addComponent(pnlCard, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        this.open();
+    }//GEN-LAST:event_formWindowOpened
 
     /**
      * @param args the command line arguments
@@ -86,5 +115,53 @@ public class SalesJDialog extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel pnlCard;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void open() {
+        this.setLocationRelativeTo(null);
+        this.loadCards(); // tải và hiển thị các thẻ lên cửa sổ bán hàng
+    }
+
+    private void loadCards() {// tải và hiển thị các thẻ lên cửa sổ bán hàng 
+        CardDAO dao = new CardDAOImpl();
+        List<Card> cards = dao.findAll();
+//        for (Card card : cards) {
+//            System.out.println(card.toString());
+//        }
+        pnlCard.removeAll();
+        cards.forEach(card -> pnlCard.add(this.createButton(card)));
+    }
+
+    @Override
+    public void showBillJDialog(int cardId) {
+// Hiển thị cửa số phiếu bán hàng của thẻ 
+        BillDAO dao = new BillDAOImpl();
+        Bill bill = dao.findServicingByCardId(cardId); // tải bill đang phục vụ của thẻ 
+        BillJDialog dialog = new BillJDialog((Frame) this.getOwner(), true);
+        dialog.setBill(bill); // Cần khai báo vào BillJDialog @Setter Bill bill 
+        dialog.setVisible(true);
+    }
+
+    private JButton createButton(Card card) { // tạo Jbutton cho thẻ 
+        JButton btnCard = new JButton();
+        btnCard.setText(String.format("Card #%d", card.getId()));
+        System.out.println("txt: "+ btnCard.getText());
+        
+        btnCard.setPreferredSize(new Dimension(0, 80));
+        System.out.println("size "+ btnCard.getSize());
+        btnCard.setEnabled(card.getStatus() == 1);//tùy status được set: 1-Operating, 0-Error, -1- Lose
+        System.out.println("status: "+ card.getStatus());
+        
+        btnCard.setBackground(btnCard.isEnabled() ? Color.GREEN : Color.GRAY);
+        System.out.println("color: "+ btnCard.getBackground().toString());
+        
+        btnCard.setActionCommand(String.valueOf(card.getId()));
+        btnCard.addActionListener((ActionEvent e) -> {
+            int cardId = Integer.parseInt(e.getActionCommand());
+            SalesJDialog.this.showBillJDialog(cardId);
+        });
+        return btnCard;
+    }
 }
