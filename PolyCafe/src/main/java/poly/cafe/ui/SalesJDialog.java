@@ -138,7 +138,7 @@ public class SalesJDialog extends javax.swing.JDialog implements SalesController
     public void showBillJDialog(int cardId) {
 // Hiển thị cửa số phiếu bán hàng của thẻ 
         BillDAO dao = new BillDAOImpl();
-        Bill bill = dao.findServicingByCardId(cardId); // tải bill đang phục vụ của thẻ 
+        Bill bill = dao.findServicingByCardId(cardId); // tải bill đang phục vụ của thẻ servicing -> chưa validate phần này
         BillJDialog dialog = new BillJDialog((Frame) this.getOwner(), true);
         dialog.setBill(bill); // Cần khai báo vào BillJDialog @Setter Bill bill 
         dialog.setVisible(true);
@@ -158,6 +158,7 @@ public class SalesJDialog extends javax.swing.JDialog implements SalesController
         System.out.println("color: "+ btnCard.getBackground().toString());
         
         btnCard.setActionCommand(String.valueOf(card.getId()));
+        System.out.println("id: "+ card.getId());
         btnCard.addActionListener((ActionEvent e) -> {
             int cardId = Integer.parseInt(e.getActionCommand());
             SalesJDialog.this.showBillJDialog(cardId);

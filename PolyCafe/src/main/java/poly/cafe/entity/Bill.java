@@ -7,7 +7,6 @@ package poly.cafe.entity;
 import lombok.*;
 import java.util.Date;
 
-
 /**
  *
  * @author Huyen
@@ -17,6 +16,7 @@ import java.util.Date;
 @Builder
 @Data
 public class Bill {
+
     private Long id;
     private String username;
     private Integer cardId;
@@ -24,4 +24,10 @@ public class Bill {
     private Date checkin = new Date();
     private Date checkout;
     private int status;
+
+    public enum Status {
+        Servicing,
+        Completed,
+        Canceled
+    }
 }

@@ -4,11 +4,26 @@
  */
 package poly.cafe.ui;
 
+import java.awt.Frame;
+import java.util.Date;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+import poly.cafe.controller.HistoryController;
+import poly.cafe.dao.BillDAO;
+import poly.cafe.entity.Bill;
+import poly.cafe.impl.BillDAOImpl;
+import poly.cafe.util.TimeRange;
+import poly.cafe.util.XAuth;
+import poly.cafe.util.XDate;
+
 /**
  *
  * @author Huyen
  */
-public class HistoryJDialog extends javax.swing.JDialog {
+public class HistoryJDialog extends javax.swing.JDialog implements HistoryController {
+
+    BillDAO billDao = new BillDAOImpl();
+    List<Bill> bills = List.of();
 
     /**
      * Creates new form HistoryJDialog
@@ -27,21 +42,136 @@ public class HistoryJDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
+        txtBegin = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        txtEnd = new javax.swing.JTextField();
+        btnFilter = new javax.swing.JButton();
+        cboTimeRanges = new javax.swing.JComboBox<>();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblBills = new javax.swing.JTable();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
+
+        jLabel1.setText("Từ ngày");
+
+        jLabel2.setText("Đến ngày");
+
+        btnFilter.setText("Lọc");
+        btnFilter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFilterActionPerformed(evt);
+            }
+        });
+
+        cboTimeRanges.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Hôm nay", "Tuần này", "Tháng này", "Quý này", "Năm nay" }));
+        cboTimeRanges.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cboTimeRangesActionPerformed(evt);
+            }
+        });
+
+        tblBills.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "Mã phiếu", "Thẻ số", "Thời điểm tạo phiếu", "Thời điểm thanh toán", "Trạng thái"
+            }
+        ));
+        tblBills.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblBillsMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                tblBillsMousePressed(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tblBills);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(54, 54, 54)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtBegin, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtEnd, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cboTimeRanges, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 572, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(txtBegin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2)
+                    .addComponent(txtEnd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnFilter)
+                    .addComponent(cboTimeRanges, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(35, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        this.open();
+    }//GEN-LAST:event_formWindowOpened
+
+    private void cboTimeRangesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboTimeRangesActionPerformed
+        this.selectTimeRange();
+    }//GEN-LAST:event_cboTimeRangesActionPerformed
+
+    private void btnFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFilterActionPerformed
+        this.fillBills();
+    }//GEN-LAST:event_btnFilterActionPerformed
+
+    private void tblBillsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblBillsMouseClicked
+//        if (tblBills.isEditing()) {
+//            tblBills.getCellEditor().stopCellEditing();
+//        }
+//        int row = tblBills.rowAtPoint(evt.getPoint());
+//        int col = tblBills.columnAtPoint(evt.getPoint());
+//        System.out.println("Click tại: row = " + row + ", col = " + col + ", clickCount = " + evt.getClickCount());
+//
+//        if (evt.getClickCount() == 2 && row != -1) {
+//            System.out.println("Đã click đúp vào dòng hợp lệ!");
+//            this.showBillJDialog();
+//        }
+    }//GEN-LAST:event_tblBillsMouseClicked
+
+    private void tblBillsMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblBillsMousePressed
+       if (evt.getClickCount() == 2) {
+            System.out.println("Đã click đúp vào dòng hợp lệ!");
+            this.showBillJDialog();
+        }
+    }//GEN-LAST:event_tblBillsMousePressed
 
     /**
      * @param args the command line arguments
@@ -86,5 +216,76 @@ public class HistoryJDialog extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnFilter;
+    private javax.swing.JComboBox<String> cboTimeRanges;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable tblBills;
+    private javax.swing.JTextField txtBegin;
+    private javax.swing.JTextField txtEnd;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void open() {
+        this.setLocationRelativeTo(null);
+        this.selectTimeRange();
+    }
+
+    @Override
+    public void fillBills() {
+        // String username = XAuth.user.getUsername();
+        String username = "NghiemN";
+        Date begin = XDate.parse(txtBegin.getText(), "MM/dd/yyyy");
+        Date end = XDate.parse(txtEnd.getText(), "MM/dd/yyyy");
+
+        bills = billDao.findByUserAndTimeRange(username, begin, end);
+        DefaultTableModel model = (DefaultTableModel) tblBills.getModel();
+        model.setRowCount(0);
+        String[] statuses = {"Servicing", "Completed", "Canceled"};
+        bills.forEach(b -> {
+            Object[] row = {
+                b.getId(),
+                "Card #" + b.getCardId(),
+                XDate.format(b.getCheckin(), "HH:mm:ss dd-MM-yyyy"),
+                XDate.format(b.getCheckout(), "HH:mm:ss dd-MM-yyyy"),
+                statuses[b.getStatus()]
+            };
+            model.addRow(row);
+        });
+    }
+
+    @Override
+    public void showBillJDialog() {
+        Bill bill = bills.get(tblBills.getSelectedRow());
+        BillJDialog dialog = new BillJDialog((Frame) this.getOwner(), true);
+        dialog.setBill(bill); // truyền bill vào cửa sổ BillJDialog 
+        dialog.setVisible(true);
+        dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosed(java.awt.event.WindowEvent e) {
+                HistoryJDialog.this.fillBills();
+            }
+        });
+    }
+
+    @Override
+    public void selectTimeRange() {
+        TimeRange range = TimeRange.today();
+        switch (cboTimeRanges.getSelectedIndex()) {
+            case 0 ->
+                range = TimeRange.today();
+            case 1 ->
+                range = TimeRange.thisWeek();
+            case 2 ->
+                range = TimeRange.thisMonth();
+            case 3 ->
+                range = TimeRange.thisQuarter();
+            case 4 ->
+                range = TimeRange.thisYear();
+        }
+        txtBegin.setText(XDate.format(range.getBegin()));
+        txtEnd.setText(XDate.format(range.getEnd()));
+        this.fillBills();
+    }
 }

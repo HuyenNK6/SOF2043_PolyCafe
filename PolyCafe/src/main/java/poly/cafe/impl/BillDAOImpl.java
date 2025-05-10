@@ -100,10 +100,18 @@ public class BillDAOImpl implements BillDAO {
             newBill.setCardId(cardId);
             newBill.setCheckin(new Date());
             newBill.setStatus(0); // đang phục vụ 
-            newBill.setUsername(XAuth.user.getUsername());
+            //newBill.setUsername(XAuth.user.getUsername());
+            newBill.setUsername(XAuth.user.getUsername());//test
             bill = this.create(newBill); // insert 
         }
         return bill;
+    }
+
+    @Override
+    public List<Bill> findByUserAndTimeRange(String username, Date begin, Date end) {
+        String sql = "SELECT * FROM Bills "
+                + " WHERE Username=? AND Checkin BETWEEN ? AND ?";
+        return XQuery.getBeanList(Bill.class, sql, username, begin, end);
     }
 
 }

@@ -4,12 +4,16 @@
  */
 package poly.cafe.ui;
 
+import lombok.Setter;
+import poly.cafe.entity.Bill;
+
 /**
  *
  * @author Huyen
  */
+@Setter
 public class DrinkJDialog extends javax.swing.JDialog {
-
+private Bill bill;
     /**
      * Creates new form DrinkJDialog
      */

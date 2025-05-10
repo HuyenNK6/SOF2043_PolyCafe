@@ -19,6 +19,8 @@ public interface BillDAO extends CrudDAO<Bill, Long> {
     List<Bill> findByCardId(Integer cardId);
 //LAB 4: bổ sung
     List<Bill> findByTimeRange(Date begin, Date end);
-//LAB 6: bổ sung
+//LAB 6: SALSEJDIALOG- bổ sung
     public Bill findServicingByCardId(Integer cardId); 
+//LAB 6: HISTORYJDIALOG- bổ sung
+    List<Bill> findByUserAndTimeRange(String username, Date begin, Date end); 
 }

@@ -577,7 +577,7 @@ public class BillManagerJDialog extends javax.swing.JDialog implements BillContr
         } else if (status == 0) {
             rdoServicing.setSelected(true);
         }
-        if (status == -1) {
+        if (status == 2) {
             rdoCanceled.setSelected(true);
         }
         txtUsername.setText(entity.getUsername());
@@ -608,7 +608,7 @@ public class BillManagerJDialog extends javax.swing.JDialog implements BillContr
         } else if (rdoServicing.isSelected()) {
             entity.setStatus(0);
         } else if (rdoCanceled.isSelected()) {
-            entity.setStatus(-1);
+            entity.setStatus(2);
         }
         return entity;
     }
@@ -619,7 +619,7 @@ public class BillManagerJDialog extends javax.swing.JDialog implements BillContr
                 return "Completed";
             case 0:
                 return "Servicing";
-            case -1:
+            case 2:
                 return "Canceled";
             default:
                 break;
